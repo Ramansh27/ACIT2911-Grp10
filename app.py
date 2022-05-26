@@ -100,7 +100,7 @@ def dashboard():
             admin_list = json.load(creds)
             for admin in admin_list:
                 if admin['email'] in session.values():
-                    return render_template('admin_dashboard.html', user=admin['name'], products=PRODUCT_LIST, history=TRANSACTIONS.reverse())
+                    return render_template('admin_dashboard.html', user=admin['name'], products=PRODUCT_LIST, history=TRANSACTIONS[::-1])
 
             return redirect('/admin')
 
@@ -217,7 +217,7 @@ def email():
             <p>Taxes: {cart_total*0.12}</p>
             <h3>Total amount: {cart_total * 1.12 }</h3>
         """
-        # mail.send(msg)
+        mail.send(msg)
 
         trans_summary = {
             "name": full_name,
