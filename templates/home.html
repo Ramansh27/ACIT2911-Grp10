@@ -30,7 +30,6 @@
             </button>
             <div id="side-content">
                 <button id="back">></button>
-                {% if users %}
                     {% for user in users %}
                     {% for owner in owners %}
                         {% if user.owner == owner %}
@@ -71,9 +70,6 @@
                         {% endif %}
                     {% endfor %}
                     {% endfor %}
-                {% else %}
-                <div>Let's see what pop's up</div>
-                {% endif %}
                 <form action="/checkout" method="post" class="checkout">
                     <button type="submit" class="checkout-btn">
                         <div>Checkout</div>

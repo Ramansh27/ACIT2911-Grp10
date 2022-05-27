@@ -31,7 +31,7 @@
             <div id="side-content">
                 <button id="back">></button>
                 {% for user in users %}
-                {% if owner in owners %}
+                {% for owner in owners %}
                     {% if user.owner == owner %}
                         {% for item in user.list %}
                             <form action="/del-cart-item" method="post">
