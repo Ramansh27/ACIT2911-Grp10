@@ -36,8 +36,8 @@ TRANSACTIONS = read_json()
 """Mail Server Settings"""
 app.config['MAIL_SERVER']='smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
-app.config['MAIL_USERNAME'] = 'ostopshop10@gmail.com'
-app.config['MAIL_PASSWORD'] = 'Acit@2911'
+app.config['MAIL_USERNAME'] = 'chhabraramansh@gmail.com'
+app.config['MAIL_PASSWORD'] = 'Ramansh7'
 app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
 mail = Mail(app)
