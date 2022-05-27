@@ -43,7 +43,6 @@ mail = Mail(app)
 
 @app.route('/')
 def homepage():
-    PRODUCT_LIST, IMAGES = read_products()
     if len(LIVE_SESSIONS) == 0:
         LIVE_SESSIONS.append(Cart(request.headers["User-Agent"]))
         cart_owners.append(Cart(request.headers["User-Agent"]).owner)
