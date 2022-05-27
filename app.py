@@ -174,6 +174,7 @@ def update_inventory():
         with open(os.path.join(products_file_path, 'products.csv'), 'r') as file:
             file = request.files['file-name']
             file.save(os.path.join(products_file_path, secure_filename('products.csv')))
+            PRODUCT_LIST, IMAGES = read_products()
         return redirect(request.referrer)
 
 @app.route('/checkout', methods=["POST", "GET"])
