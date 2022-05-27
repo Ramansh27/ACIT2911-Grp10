@@ -83,8 +83,6 @@ def admin():
 
 @app.route('/admin/dashboard', methods=['POST', 'GET'])
 def dashboard():
-    if os.path.exists(os.path.join(products_file_path, 'products.csv')):
-        PRODUCT_LIST, IMAGES = read_products()
     if request.method == 'POST':
         with open(login_file_path, 'r') as creds:
             admin_list = json.load(creds)
@@ -126,8 +124,6 @@ def about():
 
 @app.route("/add-to-cart", methods = ['GET', 'POST'])
 def add_to_cart():
-    if os.path.exists(os.path.join(products_file_path, 'products.csv')):
-        PRODUCT_LIST, IMAGES = read_products()
     if request.method == 'POST':
         p_id = request.form['p-id']
         p_name = request.form['p-name']
@@ -150,8 +146,6 @@ def add_to_cart():
 
 @app.route("/del-cart-item", methods = ["GET", "POST"])
 def del_cart_item():
-    if os.path.exists(os.path.join(products_file_path, 'products.csv')):
-        PRODUCT_LIST, IMAGES = read_products()
     if request.method == 'POST':
         p_id = request.form['p-id']
         p_name = request.form['p-name']
