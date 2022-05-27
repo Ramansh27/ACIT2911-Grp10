@@ -30,6 +30,7 @@ products_file_path = os.path.join(app.root_path, 'admin-only')
 login_file_path = os.path.join(app.root_path, 'admin-only', 'creds.json')
 transactions_file_path = os.path.join(app.root_path, 'admin-only', 'transactions.json')
 
+PRODUCT_LIST, IMAGES = read_products()
 TRANSACTIONS = read_json()
 
 """Mail Server Settings"""
@@ -56,11 +57,7 @@ def homepage():
 
 @app.route('/products')
 def products():
-    if os.path.exists(os.path.join(products_file_path, 'products.csv')):
-        PRODUCT_LIST, IMAGES = read_products()
         return render_template('/products.html', products=PRODUCT_LIST, image_list=IMAGES, users=LIVE_SESSIONS, owners=cart_owners)
-    else:
-        return "<h1>No Products to display</h1><h2>Please visit us at a later time.</h2>"
 
 
 
