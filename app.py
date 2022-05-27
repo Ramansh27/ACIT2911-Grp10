@@ -60,6 +60,7 @@ def homepage():
 @app.route('/products')
 def products():
     if os.path.exists(os.path.join(products_file_path, 'products.csv')):
+        PRODUCT_LIST, IMAGES = read_products()
         return render_template('/products.html', products=PRODUCT_LIST, image_list=IMAGES, users=LIVE_SESSIONS, owners=cart_owners)
     else:
         return "<h1>No Products to display</h1><h2>Please visit us at a later time.</h2>"
@@ -174,7 +175,6 @@ def update_inventory():
         with open(os.path.join(products_file_path, 'products.csv'), 'r') as file:
             file = request.files['file-name']
             file.save(os.path.join(products_file_path, secure_filename('products.csv')))
-            PRODUCT_LIST, IMAGES = read_products()
         return redirect(request.referrer)
 
 @app.route('/checkout', methods=["POST", "GET"])
