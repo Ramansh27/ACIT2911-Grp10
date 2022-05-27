@@ -32,7 +32,7 @@
                 <button id="back">></button>
                 {% if users %}
                     {% for user in users %}
-                    {% for owner in owners}
+                    {% for owner in owners %}
                         {% if user.owner == owner %}
                             {% for item in user.list %}
                                 <form action="/del-cart-item" method="post">
