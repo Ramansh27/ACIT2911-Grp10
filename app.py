@@ -48,7 +48,7 @@ def homepage():
         LIVE_SESSIONS.append(Cart(request.headers["User-Agent"]))
         cart_owners.append(Cart(request.headers["User-Agent"]).owner)
     for user in LIVE_SESSIONS:
-        if user.owner == request.headers["User-Agent"]: continue
+        if user.owner == request.headers["User-Agent"] or request.headers["User-Agent"] in cart_owners: break
         else: 
             LIVE_SESSIONS.append(Cart(request.headers["User-Agent"]))
             cart_owners.append(Cart(request.headers["User-Agent"]).owner)
