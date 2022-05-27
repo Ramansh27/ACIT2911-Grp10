@@ -53,8 +53,6 @@ def homepage():
             LIVE_SESSIONS.append(Cart(request.headers["User-Agent"]))
             cart_owners.append(Cart(request.headers["User-Agent"]).owner)
     
-    print(LIVE_SESSIONS)
-    print(cart_owners)
     return render_template('/home.html', users=LIVE_SESSIONS, owners=cart_owners)
 
 @app.route('/products')
