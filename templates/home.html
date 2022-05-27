@@ -32,7 +32,8 @@
                 <button id="back">></button>
                 {% if users %}
                     {% for user in users %}
-                        {% if user.owner in owners %}
+                    {% for owner in owners}
+                        {% if user.owner == owner %}
                             {% for item in user.list %}
                                 <form action="/del-cart-item" method="post">
                                     <li class="cart-item" style="display: flex; flex-direction: row; justify-content: space-between;">
@@ -68,7 +69,7 @@
                                 </div>
                             </div>
                         {% endif %}
-                        {% break %}
+                    {% endfor %}
                     {% endfor %}
                 {% else %}
                 <div>Let's see what pop's up</div>
