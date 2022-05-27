@@ -41,7 +41,7 @@
         </form>
             {% if users %}
                     {% for user in users %}
-                        {% if user.owner == request.remote_addr %}
+                        {% if user.owner == request.headers["User-Agent"] %}
                             {% for item in user.list %}
                                 <form action="/del-cart-item" method="post">
                                     <li class="cart-item" style="display: flex; flex-direction: row; justify-content: space-between;">

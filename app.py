@@ -5,7 +5,7 @@ from cart import Cart
 import os
 import json
 import csv
-from functions import read_products, read_json, add_to_history, class_to_dict, update_products, create_session
+from functions import read_products, read_json, add_to_history, class_to_dict, update_products
 from werkzeug.utils import secure_filename
 import datetime
 from flask_mail import Mail, Message
@@ -43,8 +43,14 @@ mail = Mail(app)
 
 @app.route('/')
 def homepage():
-    print(session.keys())
-    print(request.headers)
+    if len(LIVE_SESSIONS) == 0:
+        LIVE_SESSIONS.append(Cart(request.headers["User-Agent"]))
+    for user in LIVE_SESSIONS:
+        if user.owner == request.headers["User-Agent"]:
+            break
+        else: LIVE_SESSIONS.append(Cart(request.headers["User-Agent"]))
+    
+    print(LIVE_SESSIONS)
     return render_template('/home.html', users=LIVE_SESSIONS)
 
 @app.route('/products')
@@ -110,11 +116,7 @@ def sign_out():
     return redirect(url_for('admin'))
 
 @app.route('/about')
-def about():
-    for user in LIVE_SESSIONS:
-        if user.owner == request.remote_addr:
-            for item in user.list:
-                print(item)
+def about():   
     return render_template('about.html', users=LIVE_SESSIONS)
 
 
@@ -129,7 +131,7 @@ def add_to_cart():
         product = [p_id, p_name, p_cost, p_desc, p_cat]
 
         for user in LIVE_SESSIONS:
-            if user.owner == request.remote_addr:
+            if user.owner == request.headers["User-Agent"]:
                 user + product
                 user.update_total(float(product[2][1:]))
 
@@ -151,7 +153,7 @@ def del_cart_item():
         product = [p_id, p_name, p_cost, p_desc, p_cat]
 
         for user in LIVE_SESSIONS:
-            if user.owner == request.remote_addr:
+            if user.owner == request.headers["User-Agent"]:
                 user - product
                 user.update_total(float(product[2][1:]) * -1)
             
@@ -168,8 +170,6 @@ def update_inventory():
         with open(os.path.join(products_file_path, 'products.csv'), 'r') as file:
             file = request.files['file-name']
             file.save(os.path.join(products_file_path, secure_filename('products.csv')))
-            print(file)
-
         return redirect(request.referrer)
 
 @app.route('/checkout', methods=["POST", "GET"])
@@ -192,7 +192,7 @@ def email():
         addr_code = request.form["address-code"]
         address = f"{addr_st}, {addr_city}, {addr_coun}, {addr_code}"
         for user in LIVE_SESSIONS:
-            if user.owner == request.remote_addr:
+            if user.owner == request.headers["User-Agent"]:
                 comp_cart, cart_total = class_to_dict(user)
                 user.clear_cart()
         
