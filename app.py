@@ -30,7 +30,6 @@ products_file_path = os.path.join(app.root_path, 'admin-only')
 login_file_path = os.path.join(app.root_path, 'admin-only', 'creds.json')
 transactions_file_path = os.path.join(app.root_path, 'admin-only', 'transactions.json')
 
-PRODUCT_LIST, IMAGES = read_products()
 TRANSACTIONS = read_json()
 
 """Mail Server Settings"""
@@ -44,6 +43,7 @@ mail = Mail(app)
 
 @app.route('/')
 def homepage():
+    PRODUCT_LIST, IMAGES = read_products()
     if len(LIVE_SESSIONS) == 0:
         LIVE_SESSIONS.append(Cart(request.headers["User-Agent"]))
         cart_owners.append(Cart(request.headers["User-Agent"]).owner)
@@ -86,6 +86,8 @@ def admin():
 
 @app.route('/admin/dashboard', methods=['POST', 'GET'])
 def dashboard():
+    if os.path.exists(os.path.join(products_file_path, 'products.csv')):
+        PRODUCT_LIST, IMAGES = read_products()
     if request.method == 'POST':
         with open(login_file_path, 'r') as creds:
             admin_list = json.load(creds)
@@ -127,6 +129,8 @@ def about():
 
 @app.route("/add-to-cart", methods = ['GET', 'POST'])
 def add_to_cart():
+    if os.path.exists(os.path.join(products_file_path, 'products.csv')):
+        PRODUCT_LIST, IMAGES = read_products()
     if request.method == 'POST':
         p_id = request.form['p-id']
         p_name = request.form['p-name']
@@ -149,6 +153,8 @@ def add_to_cart():
 
 @app.route("/del-cart-item", methods = ["GET", "POST"])
 def del_cart_item():
+    if os.path.exists(os.path.join(products_file_path, 'products.csv')):
+        PRODUCT_LIST, IMAGES = read_products()
     if request.method == 'POST':
         p_id = request.form['p-id']
         p_name = request.form['p-name']
