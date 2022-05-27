@@ -32,7 +32,7 @@
                 <button id="back">></button>
                 {% if users %}
                     {% for user in users %}
-                        {% if user.owner == request.remote_addr %}
+                        {% if user.owner in owners %}
                             {% for item in user.list %}
                                 <form action="/del-cart-item" method="post">
                                     <li class="cart-item" style="display: flex; flex-direction: row; justify-content: space-between;">
@@ -69,6 +69,8 @@
                             </div>
                         {% endif %}
                     {% endfor %}
+                {% else %}
+                <div>Let's see what pop's up</div>
                 {% endif %}
                 <form action="/checkout" method="post" class="checkout">
                     <button type="submit" class="checkout-btn">
@@ -78,6 +80,7 @@
             </div>
         </section>  
     </div>
+    <div>{{ owners }}</div>
     <!-- <div class="main-content">
         <p><em>Fancy slideshow of basic outdoorsy people coming. Stay tuned.</em></p>
         {% for user in users %}

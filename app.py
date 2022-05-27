@@ -23,6 +23,7 @@ app.config['MAIL_USE_SSL'] = True
 mail = Mail(app)
 
 LIVE_SESSIONS = []
+cart_owners = []
 active_cart = []
 
 products_file_path = os.path.join(app.root_path, 'admin-only')
@@ -45,18 +46,21 @@ mail = Mail(app)
 def homepage():
     if len(LIVE_SESSIONS) == 0:
         LIVE_SESSIONS.append(Cart(request.headers["User-Agent"]))
+        cart_owners.append(Cart(request.headers["User-Agent"]).owner)
     for user in LIVE_SESSIONS:
-        if user.owner == request.headers["User-Agent"]:
-            break
-        else: LIVE_SESSIONS.append(Cart(request.headers["User-Agent"]))
+        if user.owner == request.headers["User-Agent"]: continue
+        else: 
+            LIVE_SESSIONS.append(Cart(request.headers["User-Agent"]))
+            cart_owners.append(Cart(request.headers["User-Agent"]).owner)
     
     print(LIVE_SESSIONS)
-    return render_template('/home.html', users=LIVE_SESSIONS)
+    print(cart_owners)
+    return render_template('/home.html', users=LIVE_SESSIONS, owners=cart_owners)
 
 @app.route('/products')
 def products():
     if os.path.exists(os.path.join(products_file_path, 'products.csv')):
-        return render_template('/products.html', products=PRODUCT_LIST, image_list=IMAGES, users=LIVE_SESSIONS)
+        return render_template('/products.html', products=PRODUCT_LIST, image_list=IMAGES, users=LIVE_SESSIONS, owners=cart_owners)
     else:
         return "<h1>No Products to display</h1><h2>Please visit us at a later time.</h2>"
 
@@ -117,7 +121,7 @@ def sign_out():
 
 @app.route('/about')
 def about():   
-    return render_template('about.html', users=LIVE_SESSIONS)
+    return render_template('about.html', users=LIVE_SESSIONS, owners=cart_owners)
 
 
 @app.route("/add-to-cart", methods = ['GET', 'POST'])
@@ -175,7 +179,7 @@ def update_inventory():
 @app.route('/checkout', methods=["POST", "GET"])
 def checkout():
     if request.method == "POST":
-        return render_template('checkout.html', product=TRANSACTIONS, users=LIVE_SESSIONS)
+        return render_template('checkout.html', product=TRANSACTIONS, users=LIVE_SESSIONS, owners=cart_owners)
     else:
         return redirect('/')
 
